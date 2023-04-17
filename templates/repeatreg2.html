@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>search</title>
+    <link rel="stylesheet" href="{% static 'ob/css/loginSuccess2.css' %}" />
+  </head>
+  <body>
+    <!-- partial:index.partial.html -->
+    <section>
+      <div class="container">
+        <div class="create">
+<!--          <form>-->
+          <form id="form" role="search" class="ml-auto" action="/myapp/signnRegister/" method="get">
+            <p class="title-create">重複註冊或輸入錯誤</p>
+            <p class="title-create">請重新輸入</p>
+            <br />
+<!--            <input class="submit" type="submit" value="點擊跳轉" />-->
+            <button class="submit" type="submit">點擊跳轉</button>
+          </form>
+        </div>
+      </div>
+    </section>
+    <!-- partial -->
+  </body>
+</html>
