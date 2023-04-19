@@ -218,55 +218,54 @@ class searchProduct():
         return list_pc
 
     def etmall_search(sss):
-        from bs4 import BeautifulSoup
-        from selenium import webdriver
-
+        import requests
+        import json
+        
         # product = 'iphone'  # product = input("請輸入查詢商品:")
         product = str(sss)
-        url = "https://www.etmall.com.tw/Search?keyword=" + product
-        # 本機測試-------------------------------------------------------------------------------------------------------
-        # options = webdriver.ChromeOptions()
-        # options.add_argument('--headless')
-        # path = '/Users/barry/chromedriver'
-        # driver = webdriver.Chrome(executable_path=path, chrome_options=options)
-        # 佈署heroku----------------------------------------------------------------------------------------------------
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument("--no-sandbox")
-        driver = webdriver.Chrome(os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
-        # --------------------------------------------------------------------------------------------------------------
-        driver.get(url)
-        soup = BeautifulSoup(driver.page_source, "html.parser")
-
-        title = soup.find_all('p', class_="n-name")
-        # price = soup.find_all("span", class_="n-price--16")
-        price = soup.find_all("div", class_="n-price__wrap")
-        link = soup.find_all('a', class_='n-pic')
-        image = soup.find_all('img', class_='n_flag_wrap_Mid')
-        # print(price)
+        
+        header = {
+            'authority': 'www.etmall.com.tw',
+            'method': 'GET',
+            'path': '/Search/Get?Keyword=iphone&Fn=&Fa=&Token=&BucketId=&ShopId=&FilterType=&SortType=&MoneyMinimum=&MoneyMaximum=&PageSize=48&PageIndex=0',
+            'scheme': 'https',
+            'accept': 'application/json, text/javascript, */*; q=0.01',
+            'accept-encoding': 'gzip, deflate, br',
+            'accept-language': 'zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7,ja-JP;q=0.6,ja;q=0.5',
+            'cookie': '_gac_UA-36865869-1=1.1678601541.Cj0KCQiA6rCgBhDVARIsAK1kGPIbzME7dqAxw8zSULNNW6ZUYOtLNc230qRddDFgmFtSvK1l5HylSLMaAtYzEALw_wcB; _fbp=fb.2.1678601540960.1377914619; __BWfp=c1678601541618x555981b72; __BWfp=c1678601541618x555981b72; __BWtransf=c1678601541618x555981b72; __BWtransf=c1678601541618x555981b72; _bwEces=true; _gcl_aw=GCL.1678601543.Cj0KCQiA6rCgBhDVARIsAK1kGPIbzME7dqAxw8zSULNNW6ZUYOtLNc230qRddDFgmFtSvK1l5HylSLMaAtYzEALw_wcB; _gcl_au=1.1.1606179248.1678601543; _atrk_siteuid=De8fcY41Dr-JbHBw; etmall-com-tw__zc=3.640d6d481fc0341a8b44dd85.43.0.0.0.; etmall-com-tw__zc_store={%22cv%22:null}; dcs_local_cid=snecvyzzk4; SERVERID=eWeb142; ETMall.CurrentReferrer=https%3A%2F%2Ftw.search.yahoo.com%2F; _gid=GA1.3.760271351.1681890741; crazyAD=one; _atrk_ssid=0Fh0D2mxSXjriT914ynq3N; appier_utmz=%7B%22csr%22%3A%22yahoo%22%2C%22timestamp%22%3A1681890742%2C%22lcsr%22%3A%22yahoo%22%7D; _gat=1; _bwgaid=351511822.1678601541; _gat_gtag_UA_36865869_1=1; appier_page_isView_c135ec63c719c66=0e6c20bf45d69798c059a027bf6458be22130da57d46c289675fa52735c02ce5; appier_pv_counter47a9d95fb44ac66=1; appier_page_isView_47a9d95fb44ac66=0e6c20bf45d69798c059a027bf6458be22130da57d46c289675fa52735c02ce5; appier_pv_counterc135ec63c719c66=2; _atrk_sessidx=9; etmall-com-tw__zc_us=643f9dba7822db1b57e2662a.0.3.1681890746059; _uetsid=1e887720de8711ed876acbd517eafe4a; _uetvid=d943cee0c09c11ed8cc7fb61f1db369d; _uetmsclkid=_uet000eea41da561b649bfa8e737365a1c7; cto_bundle=wsvaEV9vcHM3bEl2OVpjcTM5S1ZzN1dLRno2cnRPR21OeGJCcHBvdW91dm42ak8zQk9NYUE2JTJGWTdJbVZNNmlxV3VVNUpTRUV3TWJUajIlMkJxV2R3QnhOMkZrcHBKcXd2dDBGY21OODVUSFZ0UDJRbDdDUXlWNFFnRmhDWlNmRWZHS2M2dlFjQiUyQkN1ZXpUdWtCM1Y0dFNlTFVadGclM0QlM0Q; _ga_BDNVG31MZY=GS1.1.1681890742.8.1.1681890767.35.0.0; _ga=GA1.3.351511822.1678601541',
+            'referer': 'https://www.etmall.com.tw/Search?keyword=iphone',
+            'sec-ch-ua': '"Chromium";v="112", "Google Chrome";v="112", "Not:A-Brand";v="99"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': "Windows",
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-origin',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36',
+            }
+        
+        url = "https://www.etmall.com.tw/Search/Get?Keyword=" + product + "&Fn=&Fa=&Token=&BucketId=&ShopId=&FilterType=&SortType=&MoneyMinimum=&MoneyMaximum=&PageSize=48&PageIndex=0"
+        res = requests.get(url, headers=header).text
+        
+        goods = json.loads(res)
+        datas = goods['SearchProductResult']
+        datas = datas['products']
         count = 0
+        
+
 
         list_et = []
         logo_et = "https://img.scupio.com/gym/image/logo/etmall.png"
-        for t, p, l, i in zip(title, price, link, image):
-            title = t.text  # 商品名稱
-
+        for data in datas:
             count += 1
-            if count == 6:
+            if count == 21:
                 break
-            price = p.find("span", class_="n-price--16").next_sibling
-            pp = price.text  # 商品價格
-            price = pp.replace(",", "")
+            title = data['title']
+            price = data['finalPrice']
+            link = 'https://www.etmall.com.tw' + data['pageLink']
+            img = 'https:' + data['imageUrl']
 
-            link = l.get('href')
-            ll = 'https://www.etmall.com.tw' + link  # 商品連結
-
-            image = i.get('src')  # 商品圖片
-            img = 'https:' + image
-            list_et.append([title, int(price), ll, img, logo_et])
-        driver.quit()
+            list_et.append([title, int(price), link, img, logo_et])
+        
 
         return list_et
 
@@ -282,7 +281,7 @@ def shoplist(request):
     list_all.extend(searchProduct.yahoo_search(sss))
     # list_all.extend(searchProduct.momo_search(sss))
     list_all.extend(searchProduct.pchome_search(sss))
-    # list_all.extend(searchProduct.etmall_search(sss))
+    list_all.extend(searchProduct.etmall_search(sss))
 
 
     sort_list_all = sorted(list_all, key=lambda x: x[1])
