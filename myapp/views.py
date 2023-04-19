@@ -281,7 +281,7 @@ def shoplist(request):
     list_all.extend(searchProduct.yahoo_search(sss))
     # list_all.extend(searchProduct.momo_search(sss))
     list_all.extend(searchProduct.pchome_search(sss))
-    list_all.extend(searchProduct.etmall_search(sss))
+    # list_all.extend(searchProduct.etmall_search(sss))
 
 
     sort_list_all = sorted(list_all, key=lambda x: x[1])
