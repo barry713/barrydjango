@@ -102,7 +102,7 @@ class searchProduct():
         from bs4 import BeautifulSoup
 
 
-        # product = 'iphone 13 pro 256g'  # product = input("請輸入查詢商品:")
+        # product = 'iphone 13'  # product = input("請輸入查詢商品:")
         product = str(sss)
         url = "https://tw.buy.yahoo.com/search/product?p=" + product
         # 本機測試-------------------------------------------------------------------------------------------------------
@@ -112,13 +112,13 @@ class searchProduct():
         
         driver = requests.get(url, headers=header)
         soup = BeautifulSoup(driver.text, 'lxml')
-        items = soup.find_all('a', 'sc-hTBuwn guxDGq')
+        items = soup.find_all('a', 'sc-pDgPE iTcIbV')
         # print(items.html)
         list_y = []
         logo_y = "https://smartscheduler.com.tw/TMP/Wsch/IMG/yahoo.jpg"
         for item in items:
-            t = item.find('span', 'sc-ftTHYK sc-pyfCe sc-iOeugr gRqvdT dRIYXN nqfeD').text
-            p = item.find('span', 'sc-ftTHYK sc-pyfCe fLdRlM ensNm').text
+            t = item.find('span', 'sc-ispOId sc-kcuKUB sc-gAigJI byTypU ercMzW FykeY').text
+            p = item.find('span', 'sc-ispOId sc-kcuKUB dVDvBL jXIBvt').text
             p = p.replace("$", "")
             p = p.replace(",", "")
             l = item.get('href')
