@@ -186,7 +186,7 @@ class searchProduct():
         import requests
         import json
     
-        # product = 'iphone 13 pro 256g'  # product = input("請輸入查詢商品:")
+        # product = 'iphone'  # product = input("請輸入查詢商品:")
         product = str(sss)
         url = 'https://ecshweb.pchome.com.tw/search/v3.3/all/results?q=' + product
         # 本機測試-------------------------------------------------------------------------------------------------------
@@ -273,7 +273,7 @@ class searchProduct():
 #----搜尋結果------------------------------------------------------------------------------------------------------------
 
 def shoplist(request):
-    sss = request.GET.get("sss")  # 即老師的 year=request.POST.get('year')
+    sss = request.GET.get("sss")
 
     global list_all
     list_all = []
