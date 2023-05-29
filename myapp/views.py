@@ -82,7 +82,6 @@ def loginAgain2(request):
     return render(request, 'loginAgain2.html', )
 
 
-# ----登入成功,進入搜尋頁面------------------------------------------------------------------------------------------------
 
 
 # ----搜尋輸入錯誤--------------------------------------------------------------------------------------------------------
@@ -90,8 +89,6 @@ def searchError(request):
     return render(request, 'searchError.html', )
 
 
-
-# ----關於--------------------------------------------------------------------------------------------------------------
 
 
 #----爬蟲程式------------------------------------------------------------------------------------------------------------
@@ -112,12 +109,12 @@ class searchProduct():
         
         driver = requests.get(url, headers=header)
         soup = BeautifulSoup(driver.text, 'lxml')
-        items = soup.find_all('a', 'sc-pDgPE iTcIbV')
+        items = soup.find_all('a', 'sc-IeChK fzsEaj')
         # print(items.html)
         list_y = []
         logo_y = "https://smartscheduler.com.tw/TMP/Wsch/IMG/yahoo.jpg"
         for item in items:
-            t = item.find('span', 'sc-ispOId sc-kcuKUB sc-gAigJI byTypU ercMzW FykeY').text
+            t = item.find('span', 'sc-ispOId sc-kcuKUB sc-hCnrGf byTypU ercMzW hXvLDl').text
             p = item.find('span', 'sc-ispOId sc-kcuKUB dVDvBL jXIBvt').text
             p = p.replace("$", "")
             p = p.replace(",", "")
@@ -125,7 +122,7 @@ class searchProduct():
             urll = l
             driverr = requests.get(urll, headers=header)
             soupp = BeautifulSoup(driverr.text, 'lxml')
-            i = soupp.find('img', 'LensImage__img___3khRA').get('src')
+            i = soupp.find('img').get('src')
         
             list_y.append([t, int(p), l, i, logo_y])
         
