@@ -109,13 +109,13 @@ class searchProduct():
         
         driver = requests.get(url, headers=header)
         soup = BeautifulSoup(driver.text, 'lxml')
-        items = soup.find_all('a', 'sc-IeChK fzsEaj')
+        items = soup.find_all('a', 'sc-1drl28c-1 nQTUb')
         # print(items.html)
         list_y = []
         logo_y = "https://smartscheduler.com.tw/TMP/Wsch/IMG/yahoo.jpg"
         for item in items:
-            t = item.find('span', 'sc-ispOId sc-kcuKUB sc-hCnrGf byTypU ercMzW hXvLDl').text
-            p = item.find('span', 'sc-ispOId sc-kcuKUB dVDvBL jXIBvt').text
+            t = item.find('span', 'sc-dlGagL sc-gKBqHi sc-1drl28c-5 gkgFep iSWDmq hnGvZF').text
+            p = item.find('span', 'sc-dlGagL sc-gKBqHi dkipYY cWhwYS').text
             p = p.replace("$", "")
             p = p.replace(",", "")
             l = item.get('href')
@@ -129,55 +129,55 @@ class searchProduct():
         
         return list_y
 
-    def momo_search(sss):
-        from bs4 import BeautifulSoup
-        from selenium import webdriver
+    # def momo_search(sss):
+    #     from bs4 import BeautifulSoup
+    #     from selenium import webdriver
 
-        # product = 'iphone 13 pro 256g'  # product = input("請輸入查詢商品:")
-        product = str(sss)
-        url = "https://www.momoshop.com.tw/search/searchShop.jsp?keyword=" + product + '&searchType=1&curPage=1&_isFuzzy=0&showType=chessboardType'
-        # 本機測試-------------------------------------------------------------------------------------------------------
-        options = webdriver.ChromeOptions()
-        options.add_argument('--headless')
-        path = '/Users/barry/chromedriver'
-        driver = webdriver.Chrome(executable_path=path, chrome_options=options)
-        # 佈署heroku----------------------------------------------------------------------------------------------------
-        # chrome_options = webdriver.ChromeOptions()
-        # chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-        # chrome_options.add_argument("--headless")
-        # chrome_options.add_argument("--disable-dev-shm-usage")
-        # chrome_options.add_argument("--no-sandbox")
-        # driver = webdriver.Chrome(os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
-        # --------------------------------------------------------------------------------------------------------------
-        driver.get(url)
-        soup = BeautifulSoup(driver.page_source, "html.parser")
+    #     # product = 'iphone 13 pro 256g'  # product = input("請輸入查詢商品:")
+    #     product = str(sss)
+    #     url = "https://www.momoshop.com.tw/search/searchShop.jsp?keyword=" + product + '&searchType=1&curPage=1&_isFuzzy=0&showType=chessboardType'
+    #     # 本機測試-------------------------------------------------------------------------------------------------------
+    #     options = webdriver.ChromeOptions()
+    #     options.add_argument('--headless')
+    #     path = '/Users/barry/chromedriver'
+    #     driver = webdriver.Chrome(executable_path=path, chrome_options=options)
+    #     # 佈署heroku----------------------------------------------------------------------------------------------------
+    #     # chrome_options = webdriver.ChromeOptions()
+    #     # chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    #     # chrome_options.add_argument("--headless")
+    #     # chrome_options.add_argument("--disable-dev-shm-usage")
+    #     # chrome_options.add_argument("--no-sandbox")
+    #     # driver = webdriver.Chrome(os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
+    #     # --------------------------------------------------------------------------------------------------------------
+    #     driver.get(url)
+    #     soup = BeautifulSoup(driver.page_source, "html.parser")
 
-        title = soup.find_all('h3', class_="prdName")
-        price = soup.find_all("span", class_="price")
-        link = soup.find_all('a', class_='goodsUrl')
-        count = 0
+    #     title = soup.find_all('h3', class_="prdName")
+    #     price = soup.find_all("span", class_="price")
+    #     link = soup.find_all('a', class_='goodsUrl')
+    #     count = 0
 
-        list_m = []
-        logo_m = "https://fashionstw.com/wp-content/uploads/2020/05/momo購物-LOGO.jpg"
-        for item, p, l in zip(title, price, link):
-            count += 1
-            if count == 6:
-                break
-            title = item.text + '\n'  # 商品名稱
+    #     list_m = []
+    #     logo_m = "https://fashionstw.com/wp-content/uploads/2020/05/momo購物-LOGO.jpg"
+    #     for item, p, l in zip(title, price, link):
+    #         count += 1
+    #         if count == 6:
+    #             break
+    #         title = item.text + '\n'  # 商品名稱
 
-            price = p.text  # 商品價格
-            price = price.replace("$", "")
-            price = price.replace(",", "")
+    #         price = p.text  # 商品價格
+    #         price = price.replace("$", "")
+    #         price = price.replace(",", "")
 
-            ll = l.get("href")
-            link = 'https://www.momoshop.com.tw' + ll  # 商品連結
+    #         ll = l.get("href")
+    #         link = 'https://www.momoshop.com.tw' + ll  # 商品連結
 
-            img = l.find("img", class_="prdImg lazy lazy-loaded").get("src")  # 商品圖片
+    #         img = l.find("img", class_="prdImg").get("src")  # 商品圖片
 
-            list_m.append([title, int(price), link, img, logo_m])
-        driver.quit()
+    #         list_m.append([title, int(price), link, img, logo_m])
+    #     driver.quit()
 
-        return list_m
+    #     return list_m
 
     def pchome_search(sss):
         import requests
@@ -278,7 +278,7 @@ def shoplist(request):
     list_all.extend(searchProduct.yahoo_search(sss))
     # list_all.extend(searchProduct.momo_search(sss))
     list_all.extend(searchProduct.pchome_search(sss))
-    # list_all.extend(searchProduct.etmall_search(sss))
+    list_all.extend(searchProduct.etmall_search(sss))
 
 
     sort_list_all = sorted(list_all, key=lambda x: x[1])
