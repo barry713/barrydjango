@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-=kk%pa1w$t1(@)#g3s3u09s6beymn!u((&0&-xb81px++v$t_z
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
-DEBUG = False
+DEBUG = False #上傳
 
 # ALLOWED_HOSTS = []    #本機
 ALLOWED_HOSTS = ['barrydjango.herokuapp.com']       # 上傳佈署
