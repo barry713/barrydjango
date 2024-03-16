@@ -122,7 +122,8 @@ class searchProduct():
             urll = l
             driverr = requests.get(urll, headers=header)
             soupp = BeautifulSoup(driverr.text, 'lxml')
-            i = soupp.find('img').get('src')
+            ii = soupp.find('div', 'ProductItemPage__contentWrap___2Oace')
+            i = ii.find('img').get('src')
         
             list_y.append([t, int(p), l, i, logo_y])
         
