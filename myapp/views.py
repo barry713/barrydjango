@@ -1,8 +1,9 @@
-import os
-from django.http import HttpResponse
+# import os
+# from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from myapp.models import Account, History
-
+from threading import Thread
+from queue import Queue
 # Create your views here.
 
 #----首頁----------------------------------------------------------------------------------------------------------------
@@ -93,12 +94,14 @@ def searchError(request):
 
 #----爬蟲程式------------------------------------------------------------------------------------------------------------
 class searchProduct():
-    def yahoo_search(sss):
+    
+
+    def yahoo_search(self, sss, queue):
         
         import requests
         from bs4 import BeautifulSoup
 
-
+        
         # product = 'iphone 13'  # product = input("請輸入查詢商品:")
         product = str(sss)
         url = "https://tw.buy.yahoo.com/search/product?p=" + product
@@ -127,9 +130,9 @@ class searchProduct():
         
             list_y.append([t, int(p), l, i, logo_y])
         
+        queue.put(list_y)
+        # return list_y
         
-        return list_y
-
     # def momo_search(sss):
     #     from bs4 import BeautifulSoup
     #     from selenium import webdriver
@@ -180,10 +183,10 @@ class searchProduct():
 
     #     return list_m
 
-    def pchome_search(sss):
+    def pchome_search(self, sss, queue):
         import requests
         import json
-    
+        
         # product = 'iphone'  # product = input("請輸入查詢商品:")
         product = str(sss)
         url = 'https://ecshweb.pchome.com.tw/search/v3.3/all/results?q=' + product
@@ -213,9 +216,10 @@ class searchProduct():
     
             list_pc.append([title, int(price), link, img, logo_pc])
     
-        return list_pc
+        queue.put(list_pc)
+        # return list_pc
 
-    def etmall_search(sss):
+    def etmall_search(self, sss, queue):
         import requests
         import json
         
@@ -264,9 +268,9 @@ class searchProduct():
 
             list_et.append([title, int(price), link, img, logo_et])
         
-
-        return list_et
-
+        queue.put(list_et)
+        # return list_et
+        
 
 #----搜尋結果------------------------------------------------------------------------------------------------------------
 
@@ -275,12 +279,30 @@ def shoplist(request):
 
     global list_all
     list_all = []
+    
+    # queue_yahoo  = Queue()
+    queue_pchome   = Queue()
+    queue_etmall   = Queue()
 
-    list_all.extend(searchProduct.yahoo_search(sss))
-    # list_all.extend(searchProduct.momo_search(sss))
-    list_all.extend(searchProduct.pchome_search(sss))
-    list_all.extend(searchProduct.etmall_search(sss))
+    search_instance = searchProduct()
+    # yahoo_thread = Thread(target=search_instance.yahoo_search, args=(sss, queue_yahoo ))
+    # yahoo_thread.start()
+    pchome_thread = Thread(target=search_instance.pchome_search, args=(sss, queue_pchome))
+    pchome_thread.start()
+    etmall_thread = Thread(target=search_instance.etmall_search, args=(sss, queue_etmall))
+    etmall_thread.start()
+    
+    # yahoo_thread.join()
+    pchome_thread.join()
+    etmall_thread.join()
 
+    # result_yahoo  = queue_yahoo.get()
+    result_pchome = queue_pchome.get()
+    result_etmall = queue_etmall.get()
+    
+    # list_all.extend(result_yahoo)
+    list_all.extend(result_pchome)
+    list_all.extend(result_etmall)
 
     sort_list_all = sorted(list_all, key=lambda x: x[1])
 
